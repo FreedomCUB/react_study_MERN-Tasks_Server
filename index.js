@@ -1,5 +1,6 @@
 const express = require('express');
 const connectDB = require('./config/db')
+const cors = require('cors');
 
 // create server
 const app = express();
@@ -7,8 +8,10 @@ const app = express();
 // connect Data Base
 connectDB();
 
-// expres.json
+// use cors
+app.use(cors());
 
+// expres.json
 app.use( express.json({ extended: true}) );
 
 // Impor routes
@@ -20,9 +23,9 @@ app.use('/api/tasks', require('./routes/tasks'))
 
 
 // app port
-const PORT = process.env.PORT || 4000;
+const port = process.env.port || 4000;
 
 // app start
-app.listen(PORT, () => {
+app.listen(port, '0.0.0.0', () => {
     console.log(`App funcionando en el puerto ${PORT}`);
 })

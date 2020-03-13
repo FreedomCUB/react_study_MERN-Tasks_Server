@@ -3,10 +3,9 @@ const bcryptjs = require("bcryptjs");
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 
-
 //log user
 //api/auth
-exports.authUser = async (req, res) => {
+exports.loginUser = async (req, res) => {
   // search errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -23,27 +22,40 @@ exports.authUser = async (req, res) => {
       return res.status(400).json({ msg: "El usuario no existe" });
     }
 
-    // check password 
-    let correctpass = await bcryptjs.compare(password, userdb.password)
-    if (!correctpass){
-        return res.status(400).json({msg: 'Contraseña Incorrecta'});
+    // check password
+    let correctpass = await bcryptjs.compare(password, userdb.password);
+    if (!correctpass) {
+      return res.status(400).json({ msg: "Contraseña Incorrecta" });
     }
 
     // Create JWT
     const payload = {
-        userdb: {
-            id: userdb.id
-        }
-
-    };       
-    jwt.sign(payload, process.env.SECRET, {
+      userdb: {
+        id: userdb.id
+      }
+    };
+    jwt.sign(
+      payload,
+      process.env.SECRET,
+      {
         expiresIn: 3600
-    }, (error, token)=> {
+      },
+      (error, token) => {
         if (error) throw error;
-         res.json({ token });
-    })
-
+        res.json({ token });
+      }
+    );
   } catch (error) {
     console.log(error);
+  }
+};
+
+exports.authUser = async (req, res) => {
+  try {
+    const user = await UserDB.findById(req.userdb.id).select("-password");
+    res.json({ user });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Hubo un error" });
   }
 };
