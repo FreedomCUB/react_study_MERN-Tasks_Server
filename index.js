@@ -23,9 +23,9 @@ app.use('/api/tasks', require('./routes/tasks'))
 
 
 // app port
-const port = process.env.port || 4000;
+const PORT = process.env.PORT || 4000;
 
 // app start
-app.listen(port, '0.0.0.0', () => {
+app.listen(PORT, () => {
     console.log(`App funcionando en el puerto ${PORT}`);
 })
