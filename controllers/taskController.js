@@ -37,7 +37,7 @@ exports.createTask = async (req, res) => {
 exports.tasksFind = async (req, res) => {
   try {
     // find project
-    const { project } = req.body;
+    const { project } = req.query;
     const foundProject = await Project.findById(project);
     if (!foundProject) {
       return res.status(404).json({ msg: "Proyecto no encontrado" });
@@ -49,7 +49,7 @@ exports.tasksFind = async (req, res) => {
     }
 
     // find tasks by project
-    const tasks = await Task.find({ project });
+    const tasks = await Task.find({ project }).sort({created: -1});
     res.json({ tasks });
   } catch (error) {
     console.log(error);
@@ -102,7 +102,7 @@ exports.updateTask = async (req, res) => {
 
 exports.deleteTask = async (req, res) => {
   try {
-    const { project } = req.body;
+    const { project } = req.query;
 
     // find task
     let task = await Task.findById(req.params.id);
