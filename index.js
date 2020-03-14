@@ -27,5 +27,5 @@ const port = process.env.port || 4000;
 
 // app start
 app.listen(port, '0.0.0.0' , () => {
-    console.log(`App funcionando en el puerto ${PORT}`);
+    console.log(`App funcionando en el puerto ${port}`);
 })
