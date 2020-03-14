@@ -1,20 +1,21 @@
-const mongoose = require('mongoose');
-require('dotenv').config({ path: 'variables.env' });
+const mongoose = require("mongoose");
+require("dotenv").config({ path: "variables.env" });
 
 const connectDB = async () => {
-  const URI= 'mongodb+srv://root:Cub1t4n40w@cluster0-mxgxf.mongodb.net/MERN-Tasks'
-    try {
-        await mongoose.connect(URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useFindAndModify: false
-        });
-        console.log('DB Conectada');
-    } catch (error) {
-        console.log('hubo un error')
-        console.log(error);
-        process.exit(1); // Detener la app
-    }
-}
+  try {
+      await mongoose.connect(process.env.DB_MONGO, {
+          useNewUrlParser: true,
+          useCreateIndex: true,
+          useUnifiedTopology: true,
+          useFindAndModify: false
+
+      });
+      console.log('DB Connected')
+
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+};
 
 module.exports = connectDB;
