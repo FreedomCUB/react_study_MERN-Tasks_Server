@@ -49,7 +49,7 @@ exports.tasksFind = async (req, res) => {
     }
 
     // find tasks by project
-    const tasks = await Task.find({ project }).sort({created: -1});
+    const tasks = await Task.find({ project }).sort({ created: -1 });
     res.json({ tasks });
   } catch (error) {
     console.log(error);
@@ -80,17 +80,17 @@ exports.updateTask = async (req, res) => {
     // create object with new inf
     const newTask = {};
 
-    if (name) {
-      newTask.name = name;
-    }
-    if (state) {
-      newTask.state = state;
-    }
+    newTask.name = name;
+    newTask.state = state;
 
     // save tasks
-    task = await Task.findOneAndUpdate({ _id: req.params.id }, { $set: newTask }, {
-      new: true
-    });
+    task = await Task.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: newTask },
+      {
+        new: true
+      }
+    );
     res.json({ task });
   } catch (error) {
     console.log(error);
@@ -120,9 +120,8 @@ exports.deleteTask = async (req, res) => {
     }
 
     // delete task
-    await Task.findOneAndRemove({_id: req.params.id})
-     res.json({msg: 'Tarea Eliminada'});
-
+    await Task.findOneAndRemove({ _id: req.params.id });
+    res.json({ msg: "Tarea Eliminada" });
   } catch (error) {
     console.log(error);
     res.status(500).send("Hubo un error");
